@@ -28,7 +28,7 @@
         h1 { color: #bb86fc; margin-bottom: 1.5rem; }
         .menu-btn { 
             display: block; width: 100%; padding: 12px; margin: 10px 0; 
-            border: none; border-radius: 6px; background: #3700b3; 
+            border: none; border-radius: 6px; background: #D3D3D3; 
             color: white; font-size: 1rem; cursor: pointer; 
             transition: 0.2s;
         }
@@ -40,11 +40,11 @@
             background: #121212; color: #fff; 
             outline: none; margin-bottom: 1rem; text-align: center;
         }
-        input[type="text"]:focus { border-color: #bb86fc; }
-        .latin-word { font-size: 2.2rem; font-weight: bold; color: #03dac6; margin-bottom: 1rem; }
+        input[type="text"]:focus { border-color: #FFFFFF; }
+        .latin-word { font-size: 2.2rem; font-weight: bold; color: #F5F5F5; margin-bottom: 1rem; }
         .feedback { font-weight: bold; margin-bottom: 1rem; min-height: 1.5rem; }
         .correct { color: #4caf50; }
-        .incorrect { color: #cf6679; }
+        .incorrect { color: #FF0000; }
         .stats { font-size: 0.9rem; color: #999; margin-top: 1rem; }
     </style>
 </head>
@@ -94,15 +94,39 @@ function show() {
 document.getElementById('answer-input').addEventListener('keypress', e => { if (e.key === 'Enter') check(); });
 
 function check() {
-    const input = document.getElementById('answer-input').value.toLowerCase().trim();
+    const inputField = document.getElementById('answer-input');
+    const input = inputField.value.toLowerCase().trim();
     const answers = pool[idx].e.toLowerCase().split(',').map(s => s.trim());
     const isCorrect = answers.some(a => input === a || (input.length > 2 && a.includes(input)));
     const f = document.getElementById('feedback');
-    if (isCorrect) { f.innerText = "Correct!"; f.className = "feedback correct"; score++; }
-    else { f.innerText = `Wrong: ${pool[idx].e}`; f.className = "feedback incorrect"; }
+
+    let delay;
+
+    if (isCorrect) { 
+        f.innerText = "Correct!"; 
+        f.className = "feedback correct"; 
+        inputField.style.borderColor = "#4caf50";
+        inputField.style.backgroundColor = "rgba(76, 175, 80, 0.1)";
+        score++; 
+        delay = 250; 
+    } else { 
+        f.innerText = `Wrong: ${pool[idx].e}`; 
+        f.className = "feedback incorrect"; 
+        inputField.style.borderColor = "#cf6679";
+        inputField.style.backgroundColor = "rgba(207, 102, 121, 0.1)";
+        delay = 1500; 
+    }
+
     document.getElementById('score-display').innerText = `Score: ${score}`;
     idx++;
-    setTimeout(() => { f.innerText = ""; show(); }, 1200);
+
+    setTimeout(() => { 
+        f.innerText = ""; 
+        // Reset colors for the next word
+        inputField.style.borderColor = "#333";
+        inputField.style.backgroundColor = "#121212";
+        show(); 
+    }, delay);
 }
 </script>
 </body>
