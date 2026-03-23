@@ -3,166 +3,106 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>des romanis ahh</title>
+    <title>Latin Vocab - Dark Mode</title>
     <style>
-        :root {
-            /* Standard Theme */
-            --bg-image: url('https://minecraft.wiki');
-            --card-bg: rgba(255, 255, 255, 0.9);
-            --text-main: #2c3e50;
-            --mc-border: #373737;
-        }
-
-        body.dark-mode {
-            --card-bg: rgba(45, 45, 45, 0.95);
-            --text-main: #f0f0f0;
-        }
-
         body { 
             font-family: 'Segoe UI', sans-serif; 
-            /* Netherite Background - Tiled */
-            background-image: var(--bg-image);
-            background-size: 64px;
-            image-rendering: pixelated;
+            background-color: #121212; 
+            color: #e0e0e0; 
             display: flex; 
             justify-content: center; 
             align-items: center; 
             min-height: 100vh; 
             margin: 0; 
         }
-
         .container { 
-            background: var(--card-bg); 
-            padding: 2.5rem; 
-            border-radius: 4px; 
-            border: 4px solid var(--mc-border);
-            box-shadow: 10px 10px 0px rgba(0,0,0,0.3);
-            width: 100%; 
-            max-width: 500px; 
+            background: #1e1e1e; 
+            padding: 2rem; 
+            border-radius: 12px; 
+            box-shadow: 0 8px 32px rgba(0,0,0,0.5); 
+            width: 90%; 
+            max-width: 450px; 
             text-align: center; 
-            position: relative;
-            color: var(--text-main);
+            border: 1px solid #333;
         }
-        
-        .dark-mode-toggle { 
-            position: absolute; top: 10px; right: 10px; 
-            background: #555; color: white; border: 2px solid #000;
-            padding: 4px 8px; cursor: pointer; font-size: 0.7rem;
-        }
-        
-        h1 { margin-bottom: 1.5rem; text-transform: uppercase; letter-spacing: 2px; }
-
+        h1 { color: #bb86fc; margin-bottom: 1.5rem; }
         .menu-btn { 
             display: block; width: 100%; padding: 12px; margin: 10px 0; 
-            border: 3px solid #000; background: #999; color: white;
-            font-size: 1.1rem; cursor: pointer;
-            box-shadow: inset -4px -4px #555, inset 4px 4px #ccc;
+            border: none; border-radius: 6px; background: #3700b3; 
+            color: white; font-size: 1rem; cursor: pointer; 
+            transition: 0.2s;
         }
-        .menu-btn:hover { background: #777; }
-        .menu-btn:active { box-shadow: inset 4px 4px #555, inset -4px -4px #ccc; }
-
+        .menu-btn:hover { background: #6200ee; }
         .hidden { display: none; }
-        
         input[type="text"] { 
-            width: 85%; padding: 12px; font-size: 1.1rem; 
-            border: 3px solid #000; background: #000; color: #3f3; 
+            width: 80%; padding: 12px; font-size: 1.1rem; 
+            border: 2px solid #333; border-radius: 6px; 
+            background: #121212; color: #fff; 
             outline: none; margin-bottom: 1rem; text-align: center;
-            font-family: monospace;
         }
-        
-        .latin-word { font-size: 2.5rem; font-weight: bold; margin-bottom: 1rem; color: #d4af37; text-shadow: 2px 2px #000; }
+        input[type="text"]:focus { border-color: #bb86fc; }
+        .latin-word { font-size: 2.2rem; font-weight: bold; color: #03dac6; margin-bottom: 1rem; }
         .feedback { font-weight: bold; margin-bottom: 1rem; min-height: 1.5rem; }
-        .correct { color: #55ff55; }
-        .incorrect { color: #ff5555; }
-        .stats { font-size: 0.9rem; margin-top: 1rem; opacity: 0.8; }
+        .correct { color: #4caf50; }
+        .incorrect { color: #cf6679; }
+        .stats { font-size: 0.9rem; color: #999; margin-top: 1rem; }
     </style>
 </head>
 <body>
 
 <div class="container">
-    <button class="dark-mode-toggle" onclick="toggleDarkMode()">Toggle UI</button>
-    
     <div id="start-page">
-        <h1>Latin Quiz</h1>
-        <p>Select Chapters</p>
-        <button class="menu-btn" onclick="startQuiz(1)">Chapter 1 ez w</button>
-        <button class="menu-btn" onclick="startQuiz(2)">Chapter 2 still ez</button>
-        <button class="menu-btn" onclick="startQuiz(3)">Chapter 3 mid</button>
-        <button class="menu-btn" onclick="startQuiz(4)">Chapter 4 fine</button>
-        <button class="menu-btn" onclick="startQuiz('all')" style="background:#55aa55">All Chapters w</button>
+        <h1>Latin Master</h1>
+        <p>Select Chapters:</p>
+        <button class="menu-btn" onclick="startQuiz(1)">Chapter 1</button>
+        <button class="menu-btn" onclick="startQuiz(2)">Chapter 2</button>
+        <button class="menu-btn" onclick="startQuiz(3)">Chapter 3</button>
+        <button class="menu-btn" onclick="startQuiz(4)">Chapter 4</button>
+        <button class="menu-btn" onclick="startQuiz('all')" style="background:#03dac6; color:#000;">All Chapters</button>
     </div>
 
     <div id="quiz-page" class="hidden">
-        <div class="stats" id="progress">Quest 1 of X</div>
+        <div class="stats" id="progress">Word 1 of X</div>
         <div class="latin-word" id="display-latin">---</div>
         <div class="feedback" id="feedback"></div>
-        <input type="text" id="answer-input" placeholder="Type English..." autocomplete="off">
-        <div class="stats" id="score-display">Experience: 0</div>
-        <button class="menu-btn" onclick="location.reload()" style="background:#aa5555; margin-top:20px;">Return to Menu</button>
+        <input type="text" id="answer-input" placeholder="Type English & Enter..." autocomplete="off">
+        <div class="stats" id="score-display">Score: 0</div>
+        <button class="menu-btn" onclick="location.reload()" style="background:#333; margin-top:20px;">Exit</button>
     </div>
 </div>
 
 <script>
-// (Vocab data remains exactly the same as your previous working version)
-const vocab = {"1": [{"l": "amō", "e": "love, like"}, {"l": "dea", "e": "goddess"}, {"l": "deus", "e": "god"}, {"l": "et", "e": "and, even"}, {"l": "etiam", "e": "also, even"}, {"l": "fēmina", "e": "woman"}, {"l": "fīlia", "e": "daughter"}, {"l": "fīlius", "e": "son"}, {"l": "homō", "e": "man, human being"}, {"l": "īrātus", "e": "angry"}, {"l": "lacrimō", "e": "weep, cry"}, {"l": "laetus", "e": "happy"}, {"l": "laudō", "e": "praise"}, {"l": "līberī", "e": "children"}, {"l": "māter", "e": "mother"}, {"l": "multus", "e": "much, many"}, {"l": "pater", "e": "father"}, {"l": "pulcher", "e": "beautiful, handsome"}, {"l": "pūniō", "e": "punish"}, {"l": "rēgīna", "e": "queen"}, {"l": "regō", "e": "rule"}, {"l": "rēx", "e": "king"}, {"l": "saepe", "e": "often"}, {"l": "saevus", "e": "savage, cruel"}, {"l": "sed", "e": "but"}, {"l": "sum", "e": "be"}, {"l": "terreō", "e": "frighten, terrify"}, {"l": "tum", "e": "then"}, {"l": "uxor", "e": "wife"}], "2": [{"l": "ad", "e": "to, towards, at"}, {"l": "arma", "e": "arms, weapons"}, {"l": "audāx", "e": "bold, daring"}, {"l": "bellum", "e": "war"}, {"l": "capiō", "e": "take, catch, capture, make (a plan)"}, {"l": "contrā", "e": "against"}, {"l": "corpus", "e": "body"}, {"l": "currō", "e": "run"}, {"l": "eō", "e": "go"}, {"l": "flūmen", "e": "river"}, {"l": "fortis", "e": "brave, strong"}, {"l": "fortiter", "e": "bravely, strongly"}, {"l": "gladius", "e": "sword"}, {"l": "Graecus", "e": "Greek"}, {"l": "hasta", "e": "spear"}, {"l": "iaciō", "e": "throw"}, {"l": "in", "e": "into, onto"}, {"l": "ingēns", "e": "huge"}, {"l": "inquit", "e": "he says, she says, said, they say"}, {"l": "interficiō", "e": "kill"}, {"l": "maneō", "e": "remain, stay"}, {"l": "nōn", "e": "not"}, {"l": "per", "e": "through, along"}, {"l": "perīculum", "e": "danger"}, {"l": "prope", "e": "near"}, {"l": "sagitta", "e": "arrow"}, {"l": "silva", "e": "wood"}, {"l": "timeō", "e": "fear, be afraid"}, {"l": "trāns", "e": "across"}], "3": [{"l": "ā, ab", "e": "from, away from, by"}, {"l": "ascendō", "e": "climb"}, {"l": "audiō", "e": "hear, listen to"}, {"l": "auxilium", "e": "help"}, {"l": "bonus", "e": "good"}, {"l": "caelum", "e": "sky, heaven"}, {"l": "celeriter", "e": "quickly"}, {"l": "cōnspiciō", "e": "catch sight of, notice"}, {"l": "cum", "e": "with"}, {"l": "dē", "e": "from, down from, about"}, {"l": "dēscendō", "e": "go down, come down"}, {"l": "difficilis", "e": "difficult"}, {"l": "diū", "e": "for a long time"}, {"l": "ē, ex", "e": "from, out of, out from"}, {"l": "equus", "e": "horse"}, {"l": "facilis", "e": "easy"}, {"l": "fēlīx", "e": "fortunate, happy, lucky"}, {"l": "in", "e": "in, on"}, {"l": "iubeō", "e": "order"}, {"l": "magnus", "e": "big, large, great"}, {"l": "malus", "e": "evil, bad"}, {"l": "mare", "e": "sea"}, {"l": "mōns", "e": "mountain"}, {"l": "ōlim", "e": "once, some time ago"}, {"l": "petō", "e": "make for, seek, beg, ask for"}, {"l": "possum", "e": "can, be able"}, {"l": "pugnō", "e": "fight"}, {"l": "subitō", "e": "suddenly"}, {"l": "tandem", "e": "at last, finally"}, {"l": "terra", "e": "ground, land, country"}], "4": [{"l": "aedificō", "e": "build"}, {"l": "ager", "e": "field"}, {"l": "aurum", "e": "gold"}, {"l": "crēdō", "e": "believe, trust"}, {"l": "crūdēlis", "e": "cruel"}, {"l": "cūr?", "e": "why?"}, {"l": "dō", "e": "give"}, {"l": "dōnum", "e": "gift, present"}, {"l": "faciō", "e": "make, do"}, {"l": "ferō", "e": "bring, carry, bear"}, {"l": "habeō", "e": "have, hold"}, {"l": "īra", "e": "anger"}, {"l": "miser", "e": "miserable, wretched, sad"}, {"l": "nōlō", "e": "not want, refuse"}, {"l": "nōmen", "e": "name"}, {"l": "nōnne...?", "e": "surely?"}, {"l": "num...?", "e": "surely not?"}, {"l": "pecūnia", "e": "money"}, {"l": "persuādeō", "e": "persuade"}, {"l": "perterritus", "e": "terrified"}, {"l": "pōnō", "e": "put, place, set up"}, {"l": "quandō?", "e": "when?"}, {"l": "quod", "e": "because"}, {"l": "semper", "e": "always"}, {"l": "tamen", "e": "however"}, {"l": "templum", "e": "temple"}, {"l": "trīstis", "e": "sad"}, {"l": "ubi?", "e": "where?"}, {"l": "volō", "e": "want, wish, be willing"}]};
+const vocab = {"1":[{"l":"amō","e":"love, like"},{"l":"dea","e":"goddess"},{"l":"deus","e":"god"},{"l":"et","e":"and, even"},{"l":"etiam","e":"also, even"},{"l":"fēmina","e":"woman"},{"l":"fīlia","e":"daughter"},{"l":"fīlius","e":"son"},{"l":"homō","e":"man, human being"},{"l":"īrātus","e":"angry"},{"l":"lacrimō","e":"weep, cry"},{"l":"laetus","e":"happy"},{"l":"laudō","e":"praise"},{"l":"līberī","e":"children"},{"l":"māter","e":"mother"},{"l":"multus","e":"much, many"},{"l":"pater","e":"father"},{"l":"pulcher","e":"beautiful, handsome"},{"l":"pūniō","e":"punish"},{"l":"rēgīna","e":"queen"},{"l":"regō","e":"rule"},{"l":"rēx","e":"king"},{"l":"saepe","e":"often"},{"l":"saevus","e":"savage, cruel"},{"l":"sed","e":"but"},{"l":"sum","e":"be"},{"l":"terreō","e":"frighten, terrify"},{"l":"tum","e":"then"},{"l":"uxor","e":"wife"}],"2":[{"l":"ad","e":"to, towards, at"},{"l":"arma","e":"arms, weapons"},{"l":"audāx","e":"bold, daring"},{"l":"bellum","e":"war"},{"l":"capiō","e":"take, catch, capture, make (a plan)"},{"l":"contrā","e":"against"},{"l":"corpus","e":"body"},{"l":"currō","e":"run"},{"l":"eō","e":"go"},{"l":"flūmen","e":"river"},{"l":"fortis","e":"brave, strong"},{"l":"fortiter","e":"bravely, strongly"},{"l":"gladius","e":"sword"},{"l":"Graecus","e":"Greek"},{"l":"hasta","e":"spear"},{"l":"iaciō","e":"throw"},{"l":"in","e":"into, onto"},{"l":"ingēns","e":"huge"},{"l":"inquit","e":"he says, she says, said, they say"},{"l":"interficiō","e":"kill"},{"l":"maneō","e":"remain, stay"},{"l":"nōn","e":"not"},{"l":"per","e":"through, along"},{"l":"perīculum","e":"danger"},{"l":"prope","e":"near"},{"l":"sagitta","e":"arrow"},{"l":"silva","e":"wood"},{"l":"timeō","e":"fear, be afraid"},{"l":"trāns","e":"across"}],"3":[{"l":"ā, ab","e":"from, away from, by"},{"l":"ascendō","e":"climb"},{"l":"audiō","e":"hear, listen to"},{"l":"auxilium","e":"help"},{"l":"bonus","e":"good"},{"l":"caelum","e":"sky, heaven"},{"l":"celeriter","e":"quickly"},{"l":"cōnspiciō","e":"catch sight of, notice"},{"l":"cum","e":"with"},{"l":"dē","e":"from, down from, about"},{"l":"dēscendō","e":"go down, come down"},{"l":"difficilis","e":"difficult"},{"l":"diū","e":"for a long time"},{"l":"ē, ex","e":"from, out of, out from"},{"l":"equus","e":"horse"},{"l":"facilis","e":"easy"},{"l":"fēlīx","e":"fortunate, happy, lucky"},{"l":"in","e":"in, on"},{"l":"iubeō","e":"order"},{"l":"magnus","e":"big, large, great"},{"l":"malus","e":"evil, bad"},{"l":"mare","e":"sea"},{"l":"mōns","e":"mountain"},{"l":"ōlim","e":"once, some time ago"},{"l":"petō","e":"make for, seek, beg, ask for"},{"l":"possum","e":"can, be able"},{"l":"pugnō","e":"fight"},{"l":"subitō","e":"suddenly"},{"l":"tandem","e":"at last, finally"},{"l":"terra","e":"ground, land, country"}],"4":[{"l":"aedificō","e":"build"},{"l":"ager","e":"field"},{"l":"aurum","e":"gold"},{"l":"crēdō","e":"believe, trust"},{"l":"crūdēlis","e":"cruel"},{"l":"cūr?","e":"why?"},{"l":"dō","e":"give"},{"l":"dōnum","e":"gift, present"},{"l":"faciō","e":"make, do"},{"l":"ferō","e":"bring, carry, bear"},{"l":"habeō","e":"have, hold"},{"l":"īra","e":"anger"},{"l":"miser","e":"miserable, wretched, sad"},{"l":"nōlō","e":"not want, refuse"},{"l":"nōmen","e":"name"},{"l":"nōnne...?","e":"surely?"},{"l":"num...?","e":"surely not?"},{"l":"pecūnia","e":"money"},{"l":"persuādeō","e":"persuade"},{"l":"perterritus","e":"terrified"},{"l":"pōnō","e":"put, place, set up"},{"l":"quandō?","e":"when?"},{"l":"quod","e":"because"},{"l":"semper","e":"always"},{"l":"tamen","e":"however"},{"l":"templum","e":"temple"},{"l":"trīstis","e":"sad"},{"l":"ubi?","e":"where?"},{"l":"volō","e":"want, wish, be willing"}]};
+let pool = [], idx = 0, score = 0;
 
-let currentPool = [];
-let currentIndex = 0;
-let score = 0;
-
-function toggleDarkMode() { document.body.classList.toggle('dark-mode'); }
-
-function startQuiz(chapter) {
-    if (chapter === 'all') {
-        currentPool = [...vocab["1"], ...vocab["2"], ...vocab["3"], ...vocab["4"]];
-    } else {
-        currentPool = [...vocab[chapter]];
-    }
-    currentPool.sort(() => Math.random() - 0.5);
+function startQuiz(ch) {
+    pool = ch === 'all' ? [].concat(...Object.values(vocab)) : vocab[ch];
+    pool.sort(() => Math.random() - 0.5);
     document.getElementById('start-page').classList.add('hidden');
     document.getElementById('quiz-page').classList.remove('hidden');
-    showWord();
+    show();
 }
 
-function showWord() {
-    if (currentIndex >= currentPool.length) {
-        document.getElementById('display-latin').innerText = "Quest Complete!";
-        document.getElementById('answer-input').classList.add('hidden');
-        return;
-    }
-    document.getElementById('progress').innerText = `Word ${currentIndex + 1} of ${currentPool.length}`;
-    document.getElementById('display-latin').innerText = currentPool[currentIndex].l;
+function show() {
+    if (idx >= pool.length) { document.getElementById('display-latin').innerText = "Done!"; return; }
+    document.getElementById('progress').innerText = `Word ${idx + 1} of ${pool.length}`;
+    document.getElementById('display-latin').innerText = pool[idx].l;
     document.getElementById('answer-input').value = "";
     document.getElementById('answer-input').focus();
 }
 
-document.getElementById('answer-input').addEventListener('keypress', function (e) {
-    if (e.key === 'Enter') checkAnswer();
-});
+document.getElementById('answer-input').addEventListener('keypress', e => { if (e.key === 'Enter') check(); });
 
-function checkAnswer() {
+function check() {
     const input = document.getElementById('answer-input').value.toLowerCase().trim();
-    const correctStr = currentPool[currentIndex].e.toLowerCase();
-    const acceptedAnswers = correctStr.split(',').map(s => s.trim());
-    
-    let isCorrect = acceptedAnswers.some(ans => input === ans || (input.length > 2 && ans.includes(input)));
-
-    const feedback = document.getElementById('feedback');
-    if (isCorrect) {
-        feedback.innerText = "Level Up!";
-        feedback.className = "feedback correct";
-        score += 10;
-    } else {
-        feedback.innerText = `Missed! Answer: ${currentPool[currentIndex].e}`;
-        feedback.className = "feedback incorrect";
-    }
-
-    document.getElementById('score-display').innerText = `Experience: ${score}`;
-    currentIndex++;
-    setTimeout(() => {
-        feedback.innerText = "";
-        showWord();
-    }, 1500);
+    const answers = pool[idx].e.toLowerCase().split(',').map(s => s.trim());
+    const isCorrect = answers.some(a => input === a || (input.length > 2 && a.includes(input)));
+    const f = document.getElementById('feedback');
+    if (isCorrect) { f.innerText = "Correct!"; f.className = "feedback correct"; score++; }
+    else { f.innerText = `Wrong: ${pool[idx].e}`; f.className = "feedback incorrect"; }
+    document.getElementById('score-display').innerText = `Score: ${score}`;
+    idx++;
+    setTimeout(() => { f.innerText = ""; show(); }, 1200);
 }
 </script>
 </body>
