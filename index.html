@@ -5,129 +5,118 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Latin Vocab - Dark Slate</title>
     <style>
-        body { 
-            font-family: 'Segoe UI', sans-serif; 
-            background-color: #0f111a; /* Very dark blue-gray */
-            color: #d1d5db; /* Light gray text */
-            display: flex; 
-            justify-content: center; 
-            align-items: center; 
-            min-height: 100vh; 
-            margin: 0; 
-        }
-        .container { 
-            background: #1c1f26; /* Dark slate card */
-            padding: 2.5rem; 
-            border-radius: 16px; 
-            box-shadow: 0 15px 35px rgba(0,0,0,0.6); 
-            width: 90%; 
-            max-width: 450px; 
-            text-align: center; 
-            border: 1px solid #2d333d; /* Subtle blue-gray border */
-        }
-        h1 { color: #60a5fa; margin-bottom: 1.5rem; letter-spacing: -0.5px; } /* Hint of blue */
-        .menu-btn { 
-            display: block; width: 100%; padding: 12px; margin: 10px 0; 
-            border: 1px solid #374151; border-radius: 8px; 
-            background: #2d333d; /* Grayish button */
-            color: #e5e7eb; font-size: 1rem; cursor: pointer; 
-            transition: all 0.2s ease;
-        }
-        .menu-btn:hover { background: #3b82f6; border-color: #60a5fa; color: white; } /* Blue highlight on hover */
+        body { font-family: 'Segoe UI', sans-serif; background-color: #0f111a; color: #d1d5db; display: flex; justify-content: center; align-items: center; min-height: 100vh; margin: 0; }
+        .container { background: #1c1f26; padding: 2rem; border-radius: 16px; box-shadow: 0 15px 35px rgba(0,0,0,0.6); width: 90%; max-width: 500px; text-align: center; border: 1px solid #2d333d; }
+        h1 { color: #60a5fa; margin-bottom: 1rem; }
+        .grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-bottom: 15px; }
+        .menu-btn { padding: 12px; border: 1px solid #374151; border-radius: 8px; background: #2d333d; color: #e5e7eb; cursor: pointer; transition: all 0.2s; font-size: 0.9rem; font-weight: bold; }
+        .menu-btn:hover { background: #3b82f6; border-color: #60a5fa; color: white; }
+        .wide-btn { grid-column: span 2; background: #1e40af; }
+        .all-btn { grid-column: span 4; background: #059669; }
         .hidden { display: none; }
-        input[type="text"] { 
-            width: 85%; padding: 14px; font-size: 1.1rem; 
-            border: 2px solid #374151; border-radius: 8px; 
-            background: #0f111a; color: #fff; 
-            outline: none; margin-bottom: 1rem; text-align: center;
-            transition: border-color 0.2s;
-        }
-        input[type="text"]:focus { border-color: #60a5fa; } /* Blue focus glow */
-        .latin-word { font-size: 2.4rem; font-weight: 700; color: #f9fafb; margin-bottom: 1rem; }
+        input[type="text"] { width: 85%; padding: 14px; font-size: 1.1rem; border: 2px solid #374151; border-radius: 8px; background: #0f111a; color: #fff; outline: none; margin-bottom: 1rem; text-align: center; }
+        .latin-word { font-size: 2.2rem; font-weight: 700; color: #f9fafb; margin-bottom: 1rem; }
         .feedback { font-weight: 600; margin-bottom: 1rem; min-height: 1.5rem; }
-        .correct { color: #34d399; } /* Emerald green */
-        .incorrect { color: #f87171; } /* Soft red */
-        .stats { font-size: 0.85rem; color: #6b7280; margin-top: 1rem; text-transform: uppercase; letter-spacing: 1px; }
+        .correct { color: #34d399; }
+        .incorrect { color: #f87171; }
+        .stats { font-size: 0.8rem; color: #6b7280; margin-top: 1rem; text-transform: uppercase; letter-spacing: 1px; }
     </style>
 </head>
 <body>
-
 <div class="container">
     <div id="start-page">
-        <h1>des romanis latin thing</h1>
-        <p style="color: #6b7280;">select da chapter:</p>
-        <button class="menu-btn" onclick="startQuiz(1)">Chapter 1</button>
-        <button class="menu-btn" onclick="startQuiz(2)">Chapter 2</button>
-        <button class="menu-btn" onclick="startQuiz(3)">Chapter 3</button>
-        <button class="menu-btn" onclick="startQuiz(4)">Chapter 4</button>
-        <button class="menu-btn" onclick="startQuiz('all')" style="background:#1d4ed8; border-color:#3b82f6; color:white; margin-top:15px;">All Chapters</button>
+        <h1>Latin Master</h1>
+        <p style="color: #6b7280; margin-bottom: 20px;">Select Chapter(s):</p>
+        <div class="grid">
+            <button class="menu-btn" onclick="startQuiz([1])">CH 1</button>
+            <button class="menu-btn" onclick="startQuiz([2])">CH 2</button>
+            <button class="menu-btn" onclick="startQuiz([3])">CH 3</button>
+            <button class="menu-btn" onclick="startQuiz([4])">CH 4</button>
+            <button class="menu-btn" onclick="startQuiz([5])">CH 5</button>
+            <button class="menu-btn" onclick="startQuiz([6])">CH 6</button>
+            <button class="menu-btn" onclick="startQuiz([7])">CH 7</button>
+            <button class="menu-btn" onclick="startQuiz([8])">CH 8</button>
+            <button class="menu-btn wide-btn" onclick="startQuiz([1,2,3,4])">CH 1-4</button>
+            <button class="menu-btn wide-btn" onclick="startQuiz([5,6,7,8])">CH 5-8</button>
+            <button class="menu-btn all-btn" onclick="startQuiz([1,2,3,4,5,6,7,8])">ALL CHAPTERS</button>
+        </div>
     </div>
-
     <div id="quiz-page" class="hidden">
-        <div class="stats" id="progress">word 1 of X</div>
+        <div class="stats" id="progress">WORD 1 OF X</div>
         <div class="latin-word" id="display-latin">---</div>
         <div class="feedback" id="feedback"></div>
-        <input type="text" id="answer-input" placeholder="Type English & Enter..." autocomplete="off">
-        <div class="stats" id="score-display">score: 0</div>
-        <button class="menu-btn" onclick="location.reload()" style="background:transparent; border-color:#374151; color:#6b7280; margin-top:20px; font-size: 0.8rem;">leave</button>
+        <input type="text" id="answer-input" placeholder="Type meaning..." autocomplete="off">
+        <div class="stats" id="score-display">SCORE: 0</div>
+        <button class="menu-btn" onclick="location.reload()" style="margin-top:20px; width: 100%;">EXIT</button>
     </div>
 </div>
 
 <script>
-const vocab = {"1":[{"l":"amō","e":"love, like"},{"l":"dea","e":"goddess"},{"l":"deus","e":"god"},{"l":"et","e":"and, even"},{"l":"etiam","e":"also, even"},{"l":"fēmina","e":"woman"},{"l":"fīlia","e":"daughter"},{"l":"fīlius","e":"son"},{"l":"homō","e":"man, human being, human"},{"l":"īrātus","e":"angry"},{"l":"lacrimō","e":"weep, cry"},{"l":"laetus","e":"happy"},{"l":"laudō","e":"praise"},{"l":"līberī","e":"children"},{"l":"māter","e":"mother"},{"l":"multus","e":"much, many"},{"l":"pater","e":"father"},{"l":"pulcher","e":"beautiful, handsome"},{"l":"pūniō","e":"punish"},{"l":"rēgīna","e":"queen"},{"l":"regō","e":"rule"},{"l":"rēx","e":"king"},{"l":"saepe","e":"often"},{"l":"saevus","e":"savage, cruel"},{"l":"sed","e":"but"},{"l":"sum","e":"be, am"},{"l":"terreō","e":"frighten, terrify"},{"l":"tum","e":"then"},{"l":"uxor","e":"wife"}],"2":[{"l":"ad","e":"to, towards, at"},{"l":"arma","e":"arms, weapons"},{"l":"audāx","e":"bold, daring"},{"l":"bellum","e":"war"},{"l":"capiō","e":"take, catch, capture, make (a plan)"},{"l":"contrā","e":"against"},{"l":"corpus","e":"body"},{"l":"currō","e":"run"},{"l":"eō","e":"go"},{"l":"flūmen","e":"river"},{"l":"fortis","e":"brave, strong"},{"l":"fortiter","e":"bravely, strongly"},{"l":"gladius","e":"sword"},{"l":"Graecus","e":"Greek"},{"l":"hasta","e":"spear"},{"l":"iaciō","e":"throw"},{"l":"in","e":"into, onto, in, on"},{"l":"ingēns","e":"huge, massive"},{"l":"inquit","e":"say"},{"l":"interficiō","e":"kill"},{"l":"maneō","e":"remain, stay"},{"l":"nōn","e":"not"},{"l":"per","e":"through, along"},{"l":"perīculum","e":"danger"},{"l":"prope","e":"near"},{"l":"sagitta","e":"arrow"},{"l":"silva","e":"wood"},{"l":"timeō","e":"fear, be afraid"},{"l":"trāns","e":"across"}],"3":[{"l":"ā, ab","e":"from, away from, by"},{"l":"ascendō","e":"climb"},{"l":"audiō","e":"hear, listen to"},{"l":"auxilium","e":"help"},{"l":"bonus","e":"good"},{"l":"caelum","e":"sky, heaven"},{"l":"celeriter","e":"quickly"},{"l":"cōnspiciō","e":"catch sight of, notice"},{"l":"cum","e":"with"},{"l":"dē","e":"from, down from, about"},{"l":"dēscendō","e":"go down, come down"},{"l":"difficilis","e":"difficult"},{"l":"diū","e":"for a long time"},{"l":"ē, ex","e":"from, out of, out from"},{"l":"equus","e":"horse"},{"l":"facilis","e":"easy"},{"l":"fēlīx","e":"fortunate, happy, lucky"},{"l":"in","e":"in, on, into, onto"},{"l":"iubeō","e":"order"},{"l":"magnus","e":"big, large, great"},{"l":"malus","e":"evil, bad"},{"l":"mare","e":"sea"},{"l":"mōns","e":"mountain"},{"l":"ōlim","e":"once, some time ago"},{"l":"petō","e":"make for, seek, beg, ask for"},{"l":"possum","e":"can, be able"},{"l":"pugnō","e":"fight"},{"l":"subitō","e":"suddenly"},{"l":"tandem","e":"at last, finally"},{"l":"terra","e":"ground, land, country, earth"}],"4":[{"l":"aedificō","e":"build"},{"l":"ager","e":"field"},{"l":"aurum","e":"gold"},{"l":"crēdō","e":"believe, trust"},{"l":"crūdēlis","e":"cruel"},{"l":"cūr?","e":"why, why?"},{"l":"dō","e":"give"},{"l":"dōnum","e":"gift, present"},{"l":"faciō","e":"make, do"},{"l":"ferō","e":"bring, carry, bear"},{"l":"habeō","e":"have, hold"},{"l":"īra","e":"anger"},{"l":"miser","e":"miserable, wretched, sad"},{"l":"nōlō","e":"not want, refuse"},{"l":"nōmen","e":"name"},{"l":"nōnne...?","e":"surely?, surely, surely...?, surely..."},{"l":"num...?","e":"surely not?, surely not, surely...not?, surely...not"},{"l":"pecūnia","e":"money"},{"l":"persuādeō","e":"persuade"},{"l":"perterritus","e":"terrified"},{"l":"pōnō","e":"put, place, set up"},{"l":"quandō?","e":"when?"},{"l":"quod","e":"because"},{"l":"semper","e":"always"},{"l":"tamen","e":"however"},{"l":"templum","e":"temple"},{"l":"trīstis","e":"sad"},{"l":"ubi?","e":"where?, where, when, when?"},{"l":"volō","e":"want, wish, be willing"}]};
+const vocab = {
+    1: [{l:"amō",e:"love, like"},{l:"dea",e:"goddess"},{l:"deus",e:"god"},{l:"et",e:"and, even"},{l:"etiam",e:"also, even"},{l:"fēmina",e:"woman"},{l:"fīlia",e:"daughter"},{l:"fīlius",e:"son"},{l:"homō",e:"man, human being"},{l:"īrātus",e:"angry"},{l:"lacrimō",e:"weep, cry"},{l:"laetus",e:"happy"},{l:"laudō",e:"praise"},{l:"līberī",e:"children"},{l:"māter",e:"mother"},{l:"multus",e:"much, many"},{l:"pater",e:"father"},{l:"pulcher",e:"beautiful, handsome"},{l:"pūniō",e:"punish"},{l:"rēgīna",e:"queen"},{l:"regō",e:"rule"},{l:"rēx",e:"king"},{l:"saepe",e:"often"},{l:"saevus",e:"savage, cruel"},{l:"sed",e:"but"},{l:"sum",e:"be"},{l:"terreō",e:"frighten, terrify"},{l:"tum",e:"then"},{l:"uxor",e:"wife"}],
+    2: [{l:"ad",e:"to, towards, at"},{l:"arma",e:"arms, weapons"},{l:"audāx",e:"bold, daring"},{l:"bellum",e:"war"},{l:"capiō",e:"take, catch, capture, make (a plan)"},{l:"contrā",e:"against"},{l:"corpus",e:"body"},{l:"currō",e:"run"},{l:"eō",e:"go"},{l:"flūmen",e:"river"},{l:"fortis",e:"brave, strong"},{l:"fortiter",e:"bravely, strongly"},{l:"gladius",e:"sword"},{l:"Graecus",e:"Greek"},{l:"hasta",e:"spear"},{l:"iaciō",e:"throw"},{l:"in",e:"into, onto"},{l:"ingēns",e:"huge"},{l:"inquit",e:"he says, she says, said"},{l:"interficiō",e:"kill"},{l:"maneō",e:"remain, stay"},{l:"nōn",e:"not"},{l:"per",e:"through, along"},{l:"perīculum",e:"danger"},{l:"prope",e:"near"},{l:"sagitta",e:"arrow"},{l:"silva",e:"wood"},{l:"timeō",e:"fear, be afraid"},{l:"trāns",e:"across"}],
+    3: [{l:"ā, ab",e:"from, away from, by"},{l:"ascendō",e:"climb"},{l:"audiō",e:"hear, listen to"},{l:"auxilium",e:"help"},{l:"bonus",e:"good"},{l:"caelum",e:"sky, heaven"},{l:"celeriter",e:"quickly"},{l:"cōnspiciō",e:"catch sight of, notice"},{l:"cum",e:"with"},{l:"dē",e:"from, down from, about"},{l:"dēscendō",e:"go down, come down"},{l:"difficilis",e:"difficult"},{l:"diū",e:"for a long time"},{l:"ē, ex",e:"from, out of, out from"},{l:"equus",e:"horse"},{l:"facilis",e:"easy"},{l:"fēlīx",e:"fortunate, happy, lucky"},{l:"in",e:"in, on"},{l:"iubeō",e:"order"},{l:"magnus",e:"big, large, great"},{l:"malus",e:"evil, bad"},{l:"mare",e:"sea"},{l:"mōns",e:"mountain"},{l:"ōlim",e:"once, some time ago"},{l:"petō",e:"make for, seek, beg, ask for"},{l:"possum",e:"can, be able"},{l:"pugnō",e:"fight"},{l:"subitō",e:"suddenly"},{l:"tandem",e:"at last, finally"},{l:"terra",e:"ground, land, country"}],
+    4: [{l:"aedificō",e:"build"},{l:"ager",e:"field"},{l:"aurum",e:"gold"},{l:"crēdō",e:"believe, trust"},{l:"crūdēlis",e:"cruel"},{l:"cūr?",e:"why?"},{l:"dō",e:"give"},{l:"dōnum",e:"gift, present"},{l:"faciō",e:"make, do"},{l:"ferō",e:"bring, carry, bear"},{l:"habeō",e:"have, hold"},{l:"īra",e:"anger"},{l:"miser",e:"miserable, wretched, sad"},{l:"nōlō",e:"not want, refuse"},{l:"nōmen",e:"name"},{l:"nōnne?",e:"surely?"},{l:"num?",e:"surely not?"},{l:"pecūnia",e:"money"},{l:"persuādeō",e:"persuade"},{l:"perterritus",e:"terrified"},{l:"pōnō",e:"put, place, set up"},{l:"quandō?",e:"when?"},{l:"quod",e:"because"},{l:"semper",e:"always"},{l:"tamen",e:"however"},{l:"templum",e:"temple"},{l:"trīstis",e:"sad"},{l:"ubi?",e:"where?"},{l:"volō",e:"want, wish, be willing"}],
+    5: [{l:"absum",e:"be absent, be away, be distant from"},{l:"adsum",e:"be here, be present"},{l:"agricola",e:"farmer"},{l:"ancilla",e:"female slave"},{l:"aqua",e:"water"},{l:"bibō",e:"drink"},{l:"cēna",e:"dinner, meal"},{l:"cēterī",e:"the rest, the others"},{l:"cibus",e:"food"},{l:"clāmō",e:"shout"},{l:"cōnsūmō",e:"eat"},{l:"fessus",e:"tired"},{l:"festīnō",e:"hurry"},{l:"iterum",e:"again"},{l:"lūdus",e:"school, game, public games, festival"},{l:"magnopere",e:"greatly, very much"},{l:"mortuus",e:"dead"},{l:"mox",e:"soon"},{l:"nunc",e:"now"},{l:"parō",e:"prepare, provide"},{l:"rīdeō",e:"laugh, smile, laugh at"},{l:"sacer",e:"sacred"},{l:"servus",e:"slave"},{l:"spectō",e:"look at, watch"},{l:"taberna",e:"shop, inn"},{l:"urbs",e:"city"},{l:"veniō",e:"come"},{l:"vīlla",e:"house, country villa"},{l:"vīnum",e:"wine"}],
+    6: [{l:"altus",e:"high, deep"},{l:"amīcus",e:"friend"},{l:"annus",e:"year"},{l:"dormiō",e:"sleep"},{l:"emō",e:"buy"},{l:"hīc",e:"here"},{l:"hōra",e:"hour"},{l:"iam",e:"now, already"},{l:"ibi",e:"there"},{l:"itaque",e:"and so, therefore"},{l:"iuvenis",e:"young man"},{l:"locus",e:"place"},{l:"meus",e:"my"},{l:"moneō",e:"warn, advise"},{l:"nōlī / nōlīte",e:"don't"},{l:"noster",e:"our"},{l:"novus",e:"new"},{l:"numquam",e:"never"},{l:"ostendō",e:"show"},{l:"parvus",e:"small"},{l:"puella",e:"girl"},{l:"puer",e:"boy"},{l:"respondeō",e:"reply"},{l:"rogō",e:"ask, ask for"},{l:"sīc",e:"thus, in this way"},{l:"suus",e:"his, her, its, their"},{l:"tuus",e:"your, yours"},{l:"verbum",e:"word"},{l:"vester",e:"your, yours"},{l:"videō",e:"see"}],
+    7: [{l:"ambulō",e:"walk"},{l:"antequam",e:"before"},{l:"cīvis",e:"citizen"},{l:"clārus",e:"famous, clear"},{l:"dīcō",e:"say, speak, tell"},{l:"domina",e:"mistress"},{l:"dominus",e:"master"},{l:"et ... et",e:"both ... and"},{l:"forum",e:"forum, market place"},{l:"habitō",e:"live"},{l:"hic",e:"this, these"},{l:"hortus",e:"garden"},{l:"ille",e:"that, those, he, she, it"},{l:"is",e:"he, she, it, that, those"},{l:"līberō",e:"set free"},{l:"lībertus",e:"freedman, ex-slave"},{l:"mūrus",e:"wall"},{l:"nūntius",e:"messenger"},{l:"omnis",e:"all, every"},{l:"paucī",e:"few, a few"},{l:"postquam",e:"after, when"},{l:"quamquam",e:"although"},{l:"quī",e:"who, which"},{l:"quis?",e:"who? what? which?"},{l:"quoque",e:"also, too"},{l:"salūtō",e:"greet"},{l:"senātor",e:"senator"},{l:"ubi",e:"when, where"},{l:"via",e:"street, road, way"}],
+    8: [{l:"abeō",e:"go away"},{l:"adeō",e:"go to, approach"},{l:"appropinquō",e:"approach, come near to"},{l:"clāmor",e:"shout, shouting, noise"},{l:"conveniō",e:"come together, gather, meet"},{l:"cupiō",e:"want, desire"},{l:"ego",e:"I, me"},{l:"enim",e:"for"},{l:"epistula",e:"letter"},{l:"exeō",e:"go out from, go away"},{l:"ferox",e:"fierce, ferocious"},{l:"frūstrā",e:"in vain"},{l:"ineō",e:"go into, enter"},{l:"labōrō",e:"work, toil"},{l:"legō",e:"read, choose"},{l:"liber",e:"book"},{l:"longus",e:"long"},{l:"magis",e:"more"},{l:"magister",e:"teacher"},{l:"maior",e:"bigger, larger, greater"},{l:"maximē",e:"very greatly"},{l:"maximus",e:"greatest, largest, biggest"},{l:"medius",e:"middle"},{l:"melior",e:"better"},{l:"minimus",e:"smallest, least"},{l:"minor",e:"smaller, less"},{l:"nōbilis",e:"of noble birth, renowned"},{l:"nōs",e:"we, us"},{l:"nōtus",e:"famous, well-known"},{l:"optimus",e:"best"},{l:"peior",e:"worse"},{l:"pereō",e:"die, perish"},{l:"pessimus",e:"worst"},{l:"plūrēs",e:"more"},{l:"plūrimus",e:"most, very many"},{l:"plūs",e:"more"},{l:"quam",e:"than, how, as possible"},{l:"redeō",e:"go back, come back, return"},{l:"scrībō",e:"write"},{l:"sē",e:"himself, herself, itself, themselves"},{l:"senex",e:"old man"},{l:"stultus",e:"stupid, foolish"},{l:"trānseō",e:"go over, cross"},{l:"tū",e:"you"},{l:"vir",e:"man, husband"},{l:"vōs",e:"you"}]
+};
+
 let pool = [], idx = 0, score = 0;
 
-function startQuiz(ch) {
-    pool = ch === 'all' ? [].concat(...Object.values(vocab)) : vocab[ch];
+function startQuiz(chs) {
+    idx = 0; score = 0;
+    pool = chs.flatMap(c => vocab[c]);
     pool.sort(() => Math.random() - 0.5);
     document.getElementById('start-page').classList.add('hidden');
     document.getElementById('quiz-page').classList.remove('hidden');
+    document.getElementById('score-display').innerText = `SCORE: 0`;
     show();
 }
 
 function show() {
-    if (idx >= pool.length) { document.getElementById('display-latin').innerText = "Done!"; return; }
-    document.getElementById('progress').innerText = `Word ${idx + 1} of ${pool.length}`;
+    if (idx >= pool.length) { 
+        document.getElementById('display-latin').innerText = "DONE!"; 
+        document.getElementById('answer-input').classList.add('hidden');
+        return; 
+    }
+    document.getElementById('progress').innerText = `WORD ${idx + 1} OF ${pool.length}`;
     document.getElementById('display-latin').innerText = pool[idx].l;
-    document.getElementById('answer-input').value = "";
-    document.getElementById('answer-input').focus();
+    const input = document.getElementById('answer-input');
+    input.value = ""; input.focus();
 }
 
 document.getElementById('answer-input').addEventListener('keypress', e => { if (e.key === 'Enter') check(); });
 
 function check() {
     const inputField = document.getElementById('answer-input');
-    const input = inputField.value.toLowerCase().trim();
+    const val = inputField.value.toLowerCase().trim();
     const answers = pool[idx].e.toLowerCase().split(',').map(s => s.trim());
-    const isCorrect = answers.some(a => input === a || (input.length > 2 && a.includes(input)));
+    
+    // Check if input matches exactly or is a significant substring of an answer
+    const isCorrect = answers.some(a => val === a || (val.length > 2 && a.includes(val)));
     const f = document.getElementById('feedback');
+    let delay = isCorrect ? 250 : 1500;
 
-    let delay;
-
-    if (isCorrect) { 
-        f.innerText = "Correct!"; 
-        f.className = "feedback correct"; 
-        inputField.style.borderColor = "#4caf50";
-        inputField.style.backgroundColor = "rgba(76, 175, 80, 0.1)";
-        score++; 
-        delay = 200; 
-    } else { 
-        f.innerText = `Wrong: ${pool[idx].e}`; 
-        f.className = "feedback incorrect"; 
-        inputField.style.borderColor = "#cf6679";
-        inputField.style.backgroundColor = "rgba(207, 102, 121, 0.1)";
-        delay = 1500; 
+    if (isCorrect) {
+        f.innerText = "CORRECT!"; f.className = "feedback correct";
+        inputField.style.borderColor = "#34d399";
+        inputField.style.backgroundColor = "rgba(52, 211, 153, 0.1)";
+        score++;
+    } else {
+        f.innerText = `WRONG: ${pool[idx].e}`; f.className = "feedback incorrect";
+        inputField.style.borderColor = "#f87171";
+        inputField.style.backgroundColor = "rgba(248, 113, 113, 0.1)";
     }
 
-    document.getElementById('score-display').innerText = `Score: ${score}`;
+    document.getElementById('score-display').innerText = `SCORE: ${score}`;
     idx++;
-
-    setTimeout(() => { 
-        f.innerText = ""; 
-        // Reset colors for the next word
-        inputField.style.borderColor = "#333";
-        inputField.style.backgroundColor = "#121212";
-        show(); 
+    setTimeout(() => {
+        f.innerText = "";
+        inputField.style.borderColor = "#374151";
+        inputField.style.backgroundColor = "#0f111a";
+        show();
     }, delay);
 }
 </script>
