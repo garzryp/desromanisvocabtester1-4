@@ -3,13 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Latin Vocab - Dark Mode</title>
+    <title>Latin Vocab - Custom Slots</title>
     <style>
-        body { font-family: 'Segoe UI', sans-serif; background-color: #0f111a; color: #d1d5db; display: flex; justify-content: center; align-items: center; min-height: 100vh; margin: 0; transition: background 0.3s; }
+        body { font-family: 'Segoe UI', sans-serif; background-color: #0f111a; color: #d1d5db; display: flex; justify-content: center; align-items: center; min-height: 100vh; margin: 0; transition: background 0.4s ease; }
         .container { background: #1c1f26; padding: 2rem; border-radius: 16px; box-shadow: 0 15px 35px rgba(0,0,0,0.6); width: 90%; max-width: 500px; text-align: center; border: 1px solid #2d333d; position: relative; z-index: 1; }
         h1 { color: #60a5fa; margin-bottom: 1rem; }
         .grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-bottom: 15px; }
-        .menu-btn { padding: 12px; border: 1px solid #374151; border-radius: 8px; background: #2d333d; color: #e5e7eb; cursor: pointer; transition: all 0.2s; font-size: 0.9rem; font-weight: bold; }
+        .menu-btn { padding: 12px; border: 1px solid #374151; border-radius: 8px; background: #2d333d; color: #e5e7eb; cursor: pointer; transition: all 0.2s; font-size: 0.8rem; font-weight: bold; }
         .menu-btn:hover { background: #3b82f6; border-color: #60a5fa; color: white; }
         .wide-btn { grid-column: span 2; background: #1e40af; }
         .all-btn { grid-column: span 4; background: #059669; }
@@ -21,28 +21,19 @@
         .incorrect { color: #f87171; }
         .stats { font-size: 0.8rem; color: #6b7280; margin-top: 1rem; text-transform: uppercase; letter-spacing: 1px; }
 
-        /* --- THEMES --- */
-        body.forest { background-color: #06160e; color: #d1fae5; }
-        body.forest .container { background: #0a2216; border-color: #143a27; }
-        body.minecraft { background-color: #3d2923; color: #f0f0f0; }
-        body.minecraft .container { background: #5d4037; border: 4px solid #795548; border-top: 10px solid #4caf50; border-radius: 4px; }
-        body.night-sky { background: radial-gradient(circle at center, #1e1b4b 0%, #0f172a 100%); }
-
-        /* --- CUSTOM IMAGE --- */
+        /* --- BACKGROUND SYSTEM --- */
         body.custom-bg { background-size: cover; background-position: center; background-attachment: fixed; }
         body.custom-bg::before { content: ""; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.6); z-index: 0; }
-
+        
         .theme-picker { display: flex; gap: 12px; justify-content: center; margin-top: 15px; flex-wrap: wrap; }
         .theme-option { cursor: pointer; text-align: center; font-size: 0.7rem; color: #6b7280; }
-        .theme-dot { width: 30px; height: 30px; border-radius: 50%; border: 2px solid #fff; margin-bottom: 5px; }
-        #bg-upload { display: none; }
+        .theme-dot { width: 30px; height: 30px; border-radius: 50%; border: 2px solid #fff; margin-bottom: 5px; transition: 0.2s; }
     </style>
 </head>
 <body>
 <div class="container">
     <div id="start-page">
         <h1>Latin Vocab Tester</h1>
-        <p style="color: #6b7280; margin-bottom: 20px;">Select Chapter(s):</p>
         <div class="grid">
             <button class="menu-btn" onclick="startQuiz([1])">CH 1</button>
             <button class="menu-btn" onclick="startQuiz([2])">CH 2</button>
@@ -56,20 +47,24 @@
             <button class="menu-btn wide-btn" onclick="startQuiz([5,6,7,8])">CH 5-8</button>
             <button class="menu-btn all-btn" onclick="startQuiz([1,2,3,4,5,6,7,8])">ALL CHAPTERS</button>
         </div>
-        
-        <p style="color: #6b7280; margin-top: 25px; font-size: 0.8rem;">SELECT THEME</p>
+
+        <p style="color: #6b7280; margin-top: 25px; font-size: 0.7rem;">SAVE SLOTS</p>
         <div class="theme-picker">
-            <div class="theme-option" onclick="setTheme('default')"><div class="theme-dot" style="background: #0f111a;"></div>Dark</div>
-            <div class="theme-option" onclick="setTheme('forest')"><div class="theme-dot" style="background: #06160e;"></div>Forest</div>
-            <div class="theme-option" onclick="setTheme('minecraft')"><div class="theme-dot" style="background: #5d4037; border-color: #4caf50;"></div>MC</div>
-            <div class="theme-option" onclick="setTheme('night-sky')"><div class="theme-dot" style="background: #1e1b4b;"></div>Sky</div>
+            <div class="theme-option" onclick="setTheme('default')"><div class="theme-dot" id="dot-default" style="background: #0f111a;"></div>Def</div>
+            <div class="theme-option" onclick="setTheme('slot1')"><div class="theme-dot" id="dot-slot1" style="background: #374151;"></div>S1</div>
+            <div class="theme-option" onclick="setTheme('slot2')"><div class="theme-dot" id="dot-slot2" style="background: #374151;"></div>S2</div>
+            <div class="theme-option" onclick="setTheme('slot3')"><div class="theme-dot" id="dot-slot3" style="background: #374151;"></div>S3</div>
         </div>
-        
-        <div style="margin-top: 20px;">
-            <input type="text" id="bg-url-input" placeholder="Paste image URL..." style="width: 60%; padding: 8px; border-radius: 4px; border: 1px solid #374151; background: #0f111a; color: white;">
-            <button class="menu-btn" onclick="applyUrlBackground()" style="padding: 8px 12px; font-size: 0.7rem;">Apply Link</button>
-            <label style="display:block; color: #60a5fa; cursor: pointer; font-size: 0.7rem; margin-top: 10px;" for="bg-upload">OR UPLOAD FILE</label>
-            <input id="bg-upload" type="file" accept="image/*" onchange="handleUpload(this)">
+
+        <div style="margin-top: 15px;">
+            <input type="text" id="bg-url-input" placeholder="Paste URL..." style="width: 70%; padding: 8px; font-size: 0.9rem; border-radius: 6px;">
+            <div style="display: flex; gap: 5px; justify-content: center; margin-top: 5px;">
+                <button class="menu-btn" onclick="saveToSlot()" style="background: #2563eb; flex:1;">Save</button>
+                <button class="menu-btn" onclick="clearCurrentSlot()" style="background: #b91c1c; flex:1;">Clear</button>
+            </div>
+            <label style="display:block; color: #6b7280; font-size: 0.7rem; margin-top: 15px;">
+                <input type="checkbox" id="shuffle-toggle"> Shuffle backgrounds on start
+            </label>
         </div>
     </div>
 
@@ -81,17 +76,17 @@
             <input type="text" id="answer-input" placeholder="Type meaning..." autocomplete="off">
         </div>
         <div id="result-screen" class="hidden">
-            <h2 style="color: #34d399;">CHAPTER COMPLETE!</h2>
+            <h2 style="color: #34d399;">COMPLETE!</h2>
             <div class="latin-word" id="final-score-text"></div>
         </div>
         <div class="stats" id="score-display">STREAK: 0</div>
         <div class="stats" id="best-display">BEST STREAK: 0</div>
-        <button class="menu-btn" onclick="location.reload()" style="margin-top:20px; width: 100%;">EXIT TO MENU</button>
+        <button class="menu-btn" onclick="location.reload()" style="margin-top:20px; width: 100%;">MENU</button>
     </div>
 </div>
 
 <script>
-const vocab = {
+const vocab = { 
     1: [{l:"amō",e:"love, like"},{l:"dea",e:"goddess"},{l:"deus",e:"god"},{l:"et",e:"and, even"},{l:"etiam",e:"also, even"},{l:"fēmina",e:"woman"},{l:"fīlia",e:"daughter"},{l:"fīlius",e:"son"},{l:"homō",e:"man, human being, human"},{l:"īrātus",e:"angry"},{l:"lacrimō",e:"weep, cry"},{l:"laetus",e:"happy"},{l:"laudō",e:"praise"},{l:"līberī",e:"children"},{l:"māter",e:"mother"},{l:"multus",e:"much, many"},{l:"pater",e:"father"},{l:"pulcher",e:"beautiful, handsome"},{l:"pūniō",e:"punish"},{l:"rēgīna",e:"queen"},{l:"regō",e:"rule"},{l:"rēx",e:"king"},{l:"saepe",e:"often"},{l:"saevus",e:"savage, cruel"},{l:"sed",e:"but"},{l:"sum",e:"be, i am, am"},{l:"terreō",e:"frighten, terrify"},{l:"tum",e:"then"},{l:"uxor",e:"wife"}],
     2: [{l:"ad",e:"to, towards, at"},{l:"arma",e:"arms, weapons"},{l:"audāx",e:"bold, daring"},{l:"bellum",e:"war"},{l:"capiō",e:"take, catch, capture, make (a plan)"},{l:"contrā",e:"against"},{l:"corpus",e:"body"},{l:"currō",e:"run"},{l:"eō",e:"go"},{l:"flūmen",e:"river"},{l:"fortis",e:"brave, strong"},{l:"fortiter",e:"bravely, strongly"},{l:"gladius",e:"sword"},{l:"Graecus",e:"Greek"},{l:"hasta",e:"spear"},{l:"iaciō",e:"throw"},{l:"in",e:"into, onto, in, on"},{l:"ingēns",e:"huge"},{l:"inquit",e:"say, says"},{l:"interficiō",e:"kill"},{l:"maneō",e:"remain, stay"},{l:"nōn",e:"not"},{l:"per",e:"through, along"},{l:"perīculum",e:"danger"},{l:"prope",e:"near"},{l:"sagitta",e:"arrow"},{l:"silva",e:"wood"},{l:"timeō",e:"fear, be afraid"},{l:"trāns",e:"across"}],
     3: [{l:"ā, ab",e:"from, away from, by"},{l:"ascendō",e:"climb"},{l:"audiō",e:"hear, listen to"},{l:"auxilium",e:"help"},{l:"bonus",e:"good"},{l:"caelum",e:"sky, heaven"},{l:"celeriter",e:"quickly"},{l:"cōnspiciō",e:"catch sight of, notice"},{l:"cum",e:"with, when"},{l:"dē",e:"from, down from, about"},{l:"dēscendō",e:"go down, come down, descend"},{l:"difficilis",e:"difficult"},{l:"diū",e:"for a long time"},{l:"ē, ex",e:"from, out of, out from"},{l:"equus",e:"horse"},{l:"facilis",e:"easy"},{l:"fēlīx",e:"fortunate, happy, lucky"},{l:"in",e:"in, on, onto, into"},{l:"iubeō",e:"order"},{l:"magnus",e:"big, large, great"},{l:"malus",e:"evil, bad"},{l:"mare",e:"sea"},{l:"mōns",e:"mountain"},{l:"ōlim",e:"once, some time ago"},{l:"petō",e:"make for, seek, beg, ask for"},{l:"possum",e:"can, be able"},{l:"pugnō",e:"fight"},{l:"subitō",e:"suddenly"},{l:"tandem",e:"at last, finally"},{l:"terra",e:"ground, land, country, earth"}],
@@ -103,48 +98,41 @@ const vocab = {
 };
 
 let pool = [], reviewQueue = [], idx = 0, score = 0, isProcessing = false;
+let currentSlot = 'default';
 let bestScore = localStorage.getItem('latinBestScore') || 0;
 document.getElementById('best-display').innerText = `BEST STREAK: ${bestScore}`;
 
 function startQuiz(chs) {
-    idx = 0; score = 0; isProcessing = false;
-    reviewQueue = [];
-    
-    let rawPool = chs.flatMap(c => vocab[c]);
-    // Duplicate Filter (Unique Latin words only)
-    pool = rawPool.filter((item, index, self) => index === self.findIndex((t) => t.l === item.l));
-    
-    // Shuffle
+    if(document.getElementById('shuffle-toggle').checked) shuffleSlots();
+    idx = 0; score = 0; isProcessing = false; reviewQueue = [];
+    let raw = chs.flatMap(c => vocab[c]);
+    pool = raw.filter((item, index, self) => index === self.findIndex((t) => t.l === item.l));
     for (let i = pool.length - 1; i > 0; i--) {
         const j = Math.floor(Math.random() * (i + 1));
         [pool[i], pool[j]] = [pool[j], pool[i]];
     }
-    
     document.getElementById('start-page').classList.add('hidden');
     document.getElementById('quiz-page').classList.remove('hidden');
     document.getElementById('quiz-content').classList.remove('hidden');
     document.getElementById('result-screen').classList.add('hidden');
-    document.getElementById('score-display').innerText = `STREAK: 0`;
     show();
 }
 
 function show() {
     if (idx >= pool.length && reviewQueue.length > 0) {
-        pool = [...reviewQueue];
-        reviewQueue = [];
-        idx = 0;
-        alert("Time to review the ones you missed!");
+        pool = [...reviewQueue]; reviewQueue = []; idx = 0;
+        alert("Reviewing missed words!");
     }
     if (idx >= pool.length) { 
         document.getElementById('quiz-content').classList.add('hidden');
         document.getElementById('result-screen').classList.remove('hidden');
-        document.getElementById('final-score-text').innerText = `Finished all words!`;
+        document.getElementById('final-score-text').innerText = `Finished!`;
         return; 
     }
     document.getElementById('progress').innerText = `WORD ${idx + 1} OF ${pool.length}`;
     document.getElementById('display-latin').innerText = pool[idx].l;
-    const input = document.getElementById('answer-input');
-    input.value = ""; input.focus();
+    document.getElementById('answer-input').value = ""; 
+    document.getElementById('answer-input').focus();
 }
 
 document.getElementById('answer-input').addEventListener('keypress', e => { if (e.key === 'Enter') check(); });
@@ -155,22 +143,15 @@ function check() {
     const val = inputField.value.toLowerCase().trim();
     const f = document.getElementById('feedback');
 
-    if (!val) {
-        f.innerText = "Write something!"; f.className = "feedback";
-        inputField.style.borderColor = "#fbbf24"; return;
-    }
+    if (!val) { f.innerText = "Write something!"; inputField.style.borderColor = "#fbbf24"; return; }
 
     const answers = pool[idx].e.toLowerCase().split(',').map(s => s.trim());
-    const isCorrect = answers.some(a => {
-        const cleanA = a.replace(/\(.*?\)/g, '').trim(); 
-        return val === a || val === cleanA;
-    });
+    const isCorrect = answers.some(a => val === a || val === a.replace(/\(.*?\)/g, '').trim());
 
     if (isCorrect) {
         isProcessing = true;
         f.innerText = "CORRECT!"; f.className = "feedback correct";
         inputField.style.borderColor = "#34d399";
-        inputField.style.backgroundColor = "rgba(52, 211, 153, 0.1)";
         score++;
         if (score > bestScore) {
             bestScore = score; localStorage.setItem('latinBestScore', bestScore);
@@ -179,14 +160,10 @@ function check() {
         setTimeout(finishWord, 400);
     } else {
         const hasTypo = answers.some(a => isTypo(val, a.replace(/\(.*?\)/g, '').trim()));
-        if (hasTypo) {
-            f.innerText = "Check your spelling!"; f.className = "feedback";
-            inputField.style.borderColor = "#fbbf24"; return;
-        }
+        if (hasTypo) { f.innerText = "Spelling?"; inputField.style.borderColor = "#fbbf24"; return; }
         isProcessing = true;
         f.innerText = `WRONG: ${pool[idx].e}`; f.className = "feedback incorrect";
         inputField.style.borderColor = "#f87171";
-        inputField.style.backgroundColor = "rgba(248, 113, 113, 0.1)";
         reviewQueue.push(pool[idx]); score = 0;
         setTimeout(finishWord, 2000);
     }
@@ -194,10 +171,8 @@ function check() {
 }
 
 function finishWord() {
-    const f = document.getElementById('feedback');
-    const inputField = document.getElementById('answer-input');
-    f.innerText = ""; inputField.style.borderColor = "#374151";
-    inputField.style.backgroundColor = "#0f111a";
+    document.getElementById('feedback').innerText = ""; 
+    document.getElementById('answer-input').style.borderColor = "#374151";
     isProcessing = false; idx++; show();
 }
 
@@ -207,52 +182,50 @@ function isTypo(s1, s2) {
     while (i < s1.length && j < s2.length) {
         if (s1[i] !== s2[j]) {
             edits++;
-            if (s1.length > s2.length) i++;
-            else if (s2.length > s1.length) j++;
-            else { i++; j++; }
+            if (s1.length > s2.length) i++; else if (s2.length > s1.length) j++; else { i++; j++; }
         } else { i++; j++; }
     }
-    edits += (s1.length - i) + (s2.length - j);
-    return edits === 1;
+    return (edits + (s1.length - i) + (s2.length - j)) === 1;
 }
 
 function setTheme(theme) {
-    document.body.classList.remove('forest', 'minecraft', 'night-sky', 'custom-bg');
-    document.body.style.backgroundImage = ''; 
-    if (theme === 'url-bg') {
-        const url = localStorage.getItem('customLatinURL');
-        if (url) { document.body.classList.add('custom-bg'); document.body.style.backgroundImage = `url('${url}')`; }
-    } else if (theme === 'custom') {
-        const img = localStorage.getItem('customLatinBG');
-        if (img) { document.body.classList.add('custom-bg'); document.body.style.backgroundImage = `url(${img})`; }
-    } else if (theme !== 'default') {
-        document.body.classList.add(theme);
+    currentSlot = theme;
+    document.body.classList.remove('custom-bg');
+    document.body.style.backgroundImage = '';
+    document.querySelectorAll('.theme-dot').forEach(d => { d.style.boxShadow = 'none'; d.style.borderColor = '#fff'; });
+    
+    if (theme !== 'default') {
+        const url = localStorage.getItem(`latin-url-${theme}`);
+        if (url) {
+            document.body.classList.add('custom-bg');
+            document.body.style.backgroundImage = `url('${url}')`;
+            document.getElementById(`dot-${theme}`).style.boxShadow = '0 0 15px #60a5fa';
+            document.getElementById(`dot-${theme}`).style.borderColor = '#60a5fa';
+        }
     }
     localStorage.setItem('latinTheme', theme);
 }
 
-function applyUrlBackground() {
+function saveToSlot() {
+    if (currentSlot === 'default') return alert("Select a Slot!");
     const url = document.getElementById('bg-url-input').value.trim();
-    if (url) { localStorage.setItem('customLatinURL', url); setTheme('url-bg'); }
+    if (url) { localStorage.setItem(`latin-url-${currentSlot}`, url); setTheme(currentSlot); document.getElementById('bg-url-input').value = ''; }
 }
 
-function handleUpload(input) {
-    const file = input.files[0];
-    if (file) {
-        const reader = new FileReader();
-        reader.onload = (e) => { 
-            try { localStorage.setItem('customLatinBG', e.target.result); setTheme('custom'); } 
-            catch(e) { alert("File too big!"); }
-        };
-        reader.readAsDataURL(file);
+function clearCurrentSlot() {
+    if (currentSlot === 'default') return;
+    localStorage.removeItem(`latin-url-${currentSlot}`);
+    setTheme(currentSlot);
+}
+
+function shuffleSlots() {
+    const activeSlots = ['slot1', 'slot2', 'slot3'].filter(s => localStorage.getItem(`latin-url-${s}`));
+    if (activeSlots.length > 0) {
+        setTheme(activeSlots[Math.floor(Math.random() * activeSlots.length)]);
     }
 }
 
-// Ensure theme loads immediately on page visit
-window.onload = () => {
-    const savedTheme = localStorage.getItem('latinTheme') || 'default';
-    setTheme(savedTheme);
-};
+window.onload = () => setTheme(localStorage.getItem('latinTheme') || 'default');
 </script>
 </body>
 </html>
