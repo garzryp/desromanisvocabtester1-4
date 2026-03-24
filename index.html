@@ -1,15 +1,3 @@
-Your code is almost perfect! You've integrated the themes, the typo logic, and the input locking beautifully.
-
-I found two tiny logical errors in the JavaScript that would prevent the themes from loading correctly and might cause a "double up" on words.
-
-The 2 Fixes I made:
-Duplicate Filter: I added the logic to make sure words like "in" (which are in multiple chapters) only appear once when you select "All Chapters" or "CH 1-4".
-
-Theme Loading: You had the window.onload logic inside the startQuiz function. This meant the theme would only load after you started a quiz. I moved it to the bottom of the script so your theme loads the second you open the page.
-
-Here is your 100% fixed, final code. Copy and paste this to replace everything:
-
-HTML
 <!DOCTYPE html>
 <html lang="en">
 <head>
