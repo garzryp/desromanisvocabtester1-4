@@ -43,12 +43,21 @@
     </div>
     <div id="quiz-page" class="hidden">
         <div class="stats" id="progress">WORD 1 OF X</div>
-        <div class="latin-word" id="display-latin">---</div>
-        <div class="feedback" id="feedback"></div>
-        <input type="text" id="answer-input" placeholder="Type meaning..." autocomplete="off">
-        <div class="stats" id="score-display">SCORE: 0</div>
-        <div class="stats" id="best-display">BEST: 0</div>
-        <button class="menu-btn" onclick="location.reload()" style="margin-top:20px; width: 100%;">EXIT</button>
+        
+        <div id="quiz-content">
+            <div class="latin-word" id="display-latin">---</div>
+            <div class="feedback" id="feedback"></div>
+            <input type="text" id="answer-input" placeholder="Type meaning..." autocomplete="off">
+        </div>
+
+        <div id="result-screen" class="hidden">
+            <h2 style="color: #34d399;">CHAPTER COMPLETE!</h2>
+            <div class="latin-word" id="final-score-text"></div>
+        </div>
+
+        <div class="stats" id="score-display">STREAK: 0</div>
+        <div class="stats" id="best-display">BEST STREAK: 0</div>
+        <button class="menu-btn" onclick="location.reload()" style="margin-top:20px; width: 100%;">EXIT TO MENU</button>
     </div>
 </div>
 
@@ -67,28 +76,34 @@ const vocab = {
 let pool = [], idx = 0, score = 0;
 
 let bestScore = localStorage.getItem('latinBestScore') || 0;
-document.getElementById('best-display').innerText = `BEST: ${bestScore}`;
+document.getElementById('best-display').innerText = `BEST SCORE: ${bestScore}`;
 
 function startQuiz(chs) {
     idx = 0; score = 0;
     pool = chs.flatMap(c => vocab[c]);
     pool.sort(() => Math.random() - 0.5);
+    
     document.getElementById('start-page').classList.add('hidden');
     document.getElementById('quiz-page').classList.remove('hidden');
-    document.getElementById('score-display').innerText = `SCORE: 0`;
+    document.getElementById('quiz-content').classList.remove('hidden');
+    document.getElementById('result-screen').classList.add('hidden');
+    document.getElementById('score-display').innerText = `STREAK: 0`;
     show();
 }
 
 function show() {
     if (idx >= pool.length) { 
-        document.getElementById('display-latin').innerText = "DONE!"; 
-        document.getElementById('answer-input').classList.add('hidden');
+        document.getElementById('quiz-content').classList.add('hidden');
+        document.getElementById('result-screen').classList.remove('hidden');
+        document.getElementById('final-score-text').innerText = `Finished ${pool.length} words!`;
         return; 
     }
+    
     document.getElementById('progress').innerText = `WORD ${idx + 1} OF ${pool.length}`;
     document.getElementById('display-latin').innerText = pool[idx].l;
     const input = document.getElementById('answer-input');
-    input.value = ""; input.focus();
+    input.value = ""; 
+    input.focus();
 }
 
 document.getElementById('answer-input').addEventListener('keypress', e => { if (e.key === 'Enter') check(); });
@@ -96,36 +111,43 @@ document.getElementById('answer-input').addEventListener('keypress', e => { if (
 function check() {
     const inputField = document.getElementById('answer-input');
     const val = inputField.value.toLowerCase().trim();
+    if (!val) return; 
+
     const answers = pool[idx].e.toLowerCase().split(',').map(s => s.trim());
-    
-    // Check if input matches exactly or is a significant substring of an answer
-    const isCorrect = answers.some(a => val === a || (val.length > 2 && a.includes(val)));
+    const isCorrect = answers.some(a => {
+        const cleanA = a.replace(/\(.*?\)/g, '').trim(); 
+        return val === a || val === cleanA;
+    });
+
     const f = document.getElementById('feedback');
-    let delay = isCorrect ? 250 : 1500;
+    let delay = isCorrect ? 400 : 2000; 
 
     if (isCorrect) {
-        f.innerText = "CORRECT!"; f.className = "feedback correct";
+        f.innerText = "CORRECT!"; 
+        f.className = "feedback correct";
         inputField.style.borderColor = "#34d399";
         inputField.style.backgroundColor = "rgba(52, 211, 153, 0.1)";
         score++;
         if (score > bestScore) {
             bestScore = score;
             localStorage.setItem('latinBestScore', bestScore);
-            document.getElementById('best-display').innerText = `BEST: ${bestScore}`;
+            document.getElementById('best-display').innerText = `BEST STREAK: ${bestScore}`;
         }
     } else {
-        f.innerText = `WRONG: ${pool[idx].e}`; f.className = "feedback incorrect";
+        f.innerText = `WRONG: ${pool[idx].e}`; 
+        f.className = "feedback incorrect";
         inputField.style.borderColor = "#f87171";
         inputField.style.backgroundColor = "rgba(248, 113, 113, 0.1)";
         score = 0; 
     }
 
-    document.getElementById('score-display').innerText = `SCORE: ${score}`;
-    idx++;
+    document.getElementById('score-display').innerText = `STREAK: ${score}`;
+    
     setTimeout(() => {
         f.innerText = "";
         inputField.style.borderColor = "#374151";
         inputField.style.backgroundColor = "#0f111a";
+        idx++;
         show();
     }, delay);
 }
