@@ -73,29 +73,47 @@ const vocab = {
     8: [{l:"abeō",e:"go away"},{l:"adeō",e:"go to, approach"},{l:"appropinquō",e:"approach, come near to"},{l:"clāmor",e:"shout, shouting, noise"},{l:"conveniō",e:"come together, gather, meet"},{l:"cupiō",e:"want, desire"},{l:"ego",e:"I, me"},{l:"enim",e:"for"},{l:"epistula",e:"letter"},{l:"exeō",e:"go out from, go away, go out, exit, leave"},{l:"ferox",e:"fierce, ferocious"},{l:"frūstrā",e:"in vain"},{l:"ineō",e:"go into, enter"},{l:"labōrō",e:"work, toil, labor, labour"},{l:"legō",e:"read, choose"},{l:"liber",e:"book"},{l:"longus",e:"long"},{l:"magis",e:"more"},{l:"magister",e:"teacher"},{l:"maior",e:"bigger, larger, greater"},{l:"maximē",e:"very greatly"},{l:"maximus",e:"greatest, largest, biggest"},{l:"medius",e:"middle"},{l:"melior",e:"better"},{l:"minimus",e:"smallest, least"},{l:"minor",e:"smaller, less"},{l:"nōbilis",e:"of noble birth, renowned"},{l:"nōs",e:"we, us"},{l:"nōtus",e:"famous, well-known"},{l:"optimus",e:"best"},{l:"peior",e:"worse"},{l:"pereō",e:"die, perish"},{l:"pessimus",e:"worst"},{l:"plūrēs",e:"more"},{l:"plūrimus",e:"most, very many"},{l:"plūs",e:"more"},{l:"quam",e:"than, how, as possible"},{l:"redeō",e:"go back, come back, return"},{l:"scrībō",e:"write"},{l:"sē",e:"himself, herself, itself, themselves"},{l:"senex",e:"old man"},{l:"stultus",e:"stupid, foolish"},{l:"trānseō",e:"go over, cross"},{l:"tū",e:"you"},{l:"vir",e:"man, husband"},{l:"vōs",e:"you"}]
 };
 
-let pool = [], idx = 0, score = 0;
+let pool = [], reviewQueue = [], idx = 0, score = 0;
 
 let bestScore = localStorage.getItem('latinBestScore') || 0;
 document.getElementById('best-display').innerText = `BEST SCORE: ${bestScore}`;
 
 function startQuiz(chs) {
-    idx = 0; score = 0;
+    idx = 0; 
+    score = 0;
+    reviewQueue = []; // <--- Reset the mistakes from the last round here
+    
     pool = chs.flatMap(c => vocab[c]);
-    pool.sort(() => Math.random() - 0.5);
+    
+    // Shuffle the starting pool
+    for (let i = pool.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [pool[i], pool[j]] = [pool[j], pool[i]];
+    }
     
     document.getElementById('start-page').classList.add('hidden');
     document.getElementById('quiz-page').classList.remove('hidden');
     document.getElementById('quiz-content').classList.remove('hidden');
     document.getElementById('result-screen').classList.add('hidden');
     document.getElementById('score-display').innerText = `STREAK: 0`;
+    
     show();
 }
 
 function show() {
+    // If we finished the current pool but have mistakes to review...
+    if (idx >= pool.length && reviewQueue.length > 0) {
+        pool = [...reviewQueue]; // Move mistakes into the main pool
+        reviewQueue = [];        // Clear the mistake list
+        idx = 0;                 // Start from the beginning of the mistakes
+        alert("Time to review the ones you missed!"); // Optional: let the user know
+    }
+
+    // If we are truly finished (no more words and no more reviews)
     if (idx >= pool.length) { 
         document.getElementById('quiz-content').classList.add('hidden');
         document.getElementById('result-screen').classList.remove('hidden');
-        document.getElementById('final-score-text').innerText = `Finished ${pool.length} words!`;
+        document.getElementById('final-score-text').innerText = `Finished all words!`;
         return; 
     }
     
@@ -131,13 +149,18 @@ function check() {
         if (score > bestScore) {
             bestScore = score;
             localStorage.setItem('latinBestScore', bestScore);
-            document.getElementById('best-display').innerText = `BEST STREAK: ${bestScore}`;
+            const bestDisplay = document.getElementById('best-display');
+            if (bestDisplay) bestDisplay.innerText = `BEST STREAK: ${bestScore}`;
         }
     } else {
         f.innerText = `WRONG: ${pool[idx].e}`; 
         f.className = "feedback incorrect";
         inputField.style.borderColor = "#f87171";
         inputField.style.backgroundColor = "rgba(248, 113, 113, 0.1)";
+        
+        // ADD TO REVIEW QUEUE: This is the magic line
+        reviewQueue.push(pool[idx]);
+        
         score = 0; 
     }
 
